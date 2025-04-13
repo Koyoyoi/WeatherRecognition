@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 # 1. 設定參數與路徑
 data_dir = "weather_dataset"  # 替換為你的資料夾路徑
 batch_size = 16
-img_size = (224, 224)
+img_size = (256, 256)
 seed = 123
 
 # 2. 載入資料集（80% 訓練 / 20% 驗證）
