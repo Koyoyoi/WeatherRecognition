@@ -1,13 +1,13 @@
 import tensorflow as tf
 from keras import models
-from keras.layers import MaxPooling2D, Rescaling, Conv2D, Flatten, Dense
+from keras.layers import Rescaling, MaxPooling2D,  Conv2D, Flatten, Dense, Dropout
 import matplotlib.pyplot as plt
 
 # 1. 設定參數與路徑
 data_dir = "weather_dataset" 
-batch_size = 32
-img_size = (256, 256)
-seed = 110
+batch_size = 16
+img_size = (320, 320)
+seed = 123
 
 # 2. 載入資料集（80% 訓練 / 20% 驗證）
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -38,14 +38,21 @@ val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 
 # 4. 建立 CNN 模型
 model = models.Sequential([
-    Conv2D(64, 3, activation='relu', input_shape=(256, 256, 3)),
-    MaxPooling2D(),
-    Conv2D(128, 3, activation='relu'),
-    MaxPooling2D(),
-    Conv2D(256, 3, activation='relu'),
-    MaxPooling2D(),
+  
+    Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(320, 320, 3)),
+    Conv2D(32, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D(pool_size=(2, 2)),
+
+    Conv2D(64, (3, 3), activation='relu', padding='same'),
+    Conv2D(64, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D(pool_size=(2, 2)),
+
+    Conv2D(128, (3, 3), activation='relu', padding='same'),
+    Conv2D(128, (3, 3), activation='relu', padding='same'),
+    MaxPooling2D(pool_size=(2, 2)),
+
     Flatten(),
-    Dense(512, activation='relu'),
+    Dense(256, activation='relu'),
     Dense(len(class_names), activation='softmax')
 ])
 
