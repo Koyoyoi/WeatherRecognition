@@ -57,7 +57,7 @@ model.compile(
 )
 
 # 6. 訓練模型
-history = model.fit(train_ds, batch_size = 32, validation_data = val_ds, epochs = 10)
+history = model.fit(train_ds, batch_size = 64, validation_data = val_ds, epochs = 10)
 
 # 7. 顯示訓練結果
 plt.plot(history.history['accuracy'], label='Train Accuracy')
@@ -74,8 +74,8 @@ for images, labels in val_ds.take(1):  # 取一個 batch
     predicted_classes = tf.argmax(predictions, axis=1)
 
     plt.figure(figsize=(10, 10))
-    for i in range(4):  # 顯示前 4 張圖
-        ax = plt.subplot(2, 2, i + 1)
+    for i in range(6):  # 顯示前 6 張圖
+        ax = plt.subplot(2, 3, i + 1)
         plt.imshow(images[i].numpy())
         true_label = class_names[labels[i]]
         pred_label = class_names[predicted_classes[i]]
