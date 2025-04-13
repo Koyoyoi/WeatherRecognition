@@ -75,7 +75,7 @@ plt.xlabel("Epoch")
 plt.ylabel("Accuracy")
 plt.show()
 
-# 8. 顯示驗證集中的 4 張圖片與預測結果
+# 8. 顯示驗證集中的 6 張圖片與預測結果
 for images, labels in val_ds.take(1):  
     predictions = model.predict(images)
     predicted_classes = tf.argmax(predictions, axis=1)
