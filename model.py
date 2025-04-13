@@ -57,7 +57,7 @@ model.compile(
 )
 
 # 6. 訓練模型
-history = model.fit(train_ds, validation_data=val_ds, epochs=10)
+history = model.fit(train_ds, batch_size = 32, validation_data = val_ds, epochs = 10)
 
 # 7. 顯示訓練結果
 plt.plot(history.history['accuracy'], label='Train Accuracy')
@@ -88,8 +88,6 @@ for images, labels in val_ds.take(1):  # 取一個 batch
 # 9. 印出最後一輪的準確率與損失
 final_train_acc = history.history['accuracy'][-1]
 final_val_acc = history.history['val_accuracy'][-1]
-final_train_loss = history.history['loss'][-1]
-final_val_loss = history.history['val_loss'][-1]
 
 print(f"訓練準確率：{final_train_acc:.4f}")
 print(f"驗證準確率：{final_val_acc:.4f}")
