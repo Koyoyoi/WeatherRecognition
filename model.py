@@ -4,10 +4,10 @@ from keras.layers import MaxPooling2D, Rescaling, Conv2D, Flatten, Dense
 import matplotlib.pyplot as plt
 
 # 1. 設定參數與路徑
-data_dir = "weather_dataset"  # ← 請替換成你的資料資料夾
-batch_size = 16
+data_dir = "weather_dataset" 
+batch_size = 32
 img_size = (256, 256)
-seed = 111
+seed = 110
 
 # 2. 載入資料集（80% 訓練 / 20% 驗證）
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -57,7 +57,7 @@ model.compile(
 )
 
 # 6. 訓練模型
-history = model.fit(train_ds, batch_size = 64, validation_data = val_ds, epochs = 10)
+history = model.fit(train_ds, validation_data = val_ds, epochs = 10)
 
 # 7. 顯示訓練結果
 plt.plot(history.history['accuracy'], label='Train Accuracy')
@@ -69,7 +69,7 @@ plt.ylabel("Accuracy")
 plt.show()
 
 # 8. 顯示驗證集中的 4 張圖片與預測結果
-for images, labels in val_ds.take(1):  # 取一個 batch
+for images, labels in val_ds.take(1):  
     predictions = model.predict(images)
     predicted_classes = tf.argmax(predictions, axis=1)
 
