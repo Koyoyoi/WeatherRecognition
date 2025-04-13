@@ -4,10 +4,10 @@ from keras.layers import MaxPooling2D, Rescaling, Conv2D, Flatten, Dense
 import matplotlib.pyplot as plt
 
 # 1. 設定參數與路徑
-data_dir = "weather_dataset"  # 替換為你的資料夾路徑
+data_dir = "weather_dataset"  # ← 請替換成你的資料資料夾
 batch_size = 16
 img_size = (256, 256)
-seed = 123
+seed = 111
 
 # 2. 載入資料集（80% 訓練 / 20% 驗證）
 train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -38,31 +38,22 @@ val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 
 # 4. 建立 CNN 模型
 model = models.Sequential([
-    # 第一層：卷積層 (Convolutional Layer)
-    Conv2D(64, 3, activation='relu', input_shape=(256, 256, 3)),  # 32 個 3x3 卷積核
-    MaxPooling2D(),  # 池化層 (MaxPooling)
-
-    # 第二層：卷積層 (Convolutional Layer)
-    Conv2D(128, 3, activation='relu'),  # 64 個 3x3 卷積核
-    MaxPooling2D(),  # 池化層
-
-    # 第三層：卷積層 (Convolutional Layer)
-    Conv2D(256, 3, activation='relu'),  # 128 個 3x3 卷積核
-    MaxPooling2D(),  # 池化層
-
-    # 展平層 (Flatten)
-    Flatten(),  # 展開為一維陣列
-
-    # 全連接層 (Fully Connected Layer)
-    Dense(512, activation='relu'),  # 128 個神經元
-    Dense(len(class_names), activation='softmax')  # 輸出層，使用 softmax 激活函數
+    Conv2D(64, 3, activation='relu', input_shape=(256, 256, 3)),
+    MaxPooling2D(),
+    Conv2D(128, 3, activation='relu'),
+    MaxPooling2D(),
+    Conv2D(256, 3, activation='relu'),
+    MaxPooling2D(),
+    Flatten(),
+    Dense(512, activation='relu'),
+    Dense(len(class_names), activation='softmax')
 ])
 
 # 5. 編譯模型
 model.compile(
-    optimizer='adam',  # 優化器
-    loss='sparse_categorical_crossentropy',  # 損失函數（適用於多分類）
-    metrics=['accuracy']  # 評估指標：準確率
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy',
+    metrics=['accuracy']
 )
 
 # 6. 訓練模型
@@ -83,13 +74,23 @@ for images, labels in val_ds.take(1):  # 取一個 batch
     predicted_classes = tf.argmax(predictions, axis=1)
 
     plt.figure(figsize=(10, 10))
-    for i in range(4):  # 取前 4 張圖片
+    for i in range(4):  # 顯示前 4 張圖
         ax = plt.subplot(2, 2, i + 1)
-        plt.imshow(images[i].numpy())  # 顯示圖片
+        plt.imshow(images[i].numpy())
         true_label = class_names[labels[i]]
         pred_label = class_names[predicted_classes[i]]
         color = "green" if true_label == pred_label else "red"
         plt.title(f"True: {true_label}\nPred: {pred_label}", color=color)
         plt.axis("off")
-    plt.show()  # 確保圖片正確顯示
+    plt.show()
     break
+
+# 9. 印出最後一輪的準確率與損失
+final_train_acc = history.history['accuracy'][-1]
+final_val_acc = history.history['val_accuracy'][-1]
+final_train_loss = history.history['loss'][-1]
+final_val_loss = history.history['val_loss'][-1]
+
+print(f"訓練準確率：{final_train_acc:.4f}")
+print(f"驗證準確率：{final_val_acc:.4f}")
+
