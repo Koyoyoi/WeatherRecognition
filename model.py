@@ -1,5 +1,6 @@
 import tensorflow as tf
-from tensorflow.keras import layers, models
+from keras import models
+from keras.layers import MaxPooling2D, Rescaling, Conv2D, Flatten, Dense
 import matplotlib.pyplot as plt
 
 # 1. 設定參數與路徑
@@ -31,30 +32,30 @@ class_names = train_ds.class_names
 print("類別名稱：", class_names)
 
 # 3. 標準化圖片像素（0~1）
-normalization_layer = layers.Rescaling(1./255)
+normalization_layer = Rescaling(1./255)
 train_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
 val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 
 # 4. 建立 CNN 模型
 model = models.Sequential([
     # 第一層：卷積層 (Convolutional Layer)
-    layers.Conv2D(32, 3, activation='relu', input_shape=(224, 224, 3)),  # 32 個 3x3 卷積核
-    layers.MaxPooling2D(),  # 池化層 (MaxPooling)
+    Conv2D(32, 3, activation='relu', input_shape=(224, 224, 3)),  # 32 個 3x3 卷積核
+    MaxPooling2D(),  # 池化層 (MaxPooling)
 
     # 第二層：卷積層 (Convolutional Layer)
-    layers.Conv2D(64, 3, activation='relu'),  # 64 個 3x3 卷積核
-    layers.MaxPooling2D(),  # 池化層
+    Conv2D(64, 3, activation='relu'),  # 64 個 3x3 卷積核
+    MaxPooling2D(),  # 池化層
 
     # 第三層：卷積層 (Convolutional Layer)
-    layers.Conv2D(128, 3, activation='relu'),  # 128 個 3x3 卷積核
-    layers.MaxPooling2D(),  # 池化層
+    Conv2D(128, 3, activation='relu'),  # 128 個 3x3 卷積核
+    MaxPooling2D(),  # 池化層
 
     # 展平層 (Flatten)
-    layers.Flatten(),  # 展開為一維陣列
+    Flatten(),  # 展開為一維陣列
 
     # 全連接層 (Fully Connected Layer)
-    layers.Dense(128, activation='relu'),  # 128 個神經元
-    layers.Dense(len(class_names), activation='softmax')  # 輸出層，使用 softmax 激活函數
+    Dense(128, activation='relu'),  # 128 個神經元
+    Dense(len(class_names), activation='softmax')  # 輸出層，使用 softmax 激活函數
 ])
 
 # 5. 編譯模型
