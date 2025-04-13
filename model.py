@@ -39,22 +39,22 @@ val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 # 4. 建立 CNN 模型
 model = models.Sequential([
     # 第一層：卷積層 (Convolutional Layer)
-    Conv2D(32, 3, activation='relu', input_shape=(224, 224, 3)),  # 32 個 3x3 卷積核
+    Conv2D(64, 3, activation='relu', input_shape=(256, 256, 3)),  # 32 個 3x3 卷積核
     MaxPooling2D(),  # 池化層 (MaxPooling)
 
     # 第二層：卷積層 (Convolutional Layer)
-    Conv2D(64, 3, activation='relu'),  # 64 個 3x3 卷積核
+    Conv2D(128, 3, activation='relu'),  # 64 個 3x3 卷積核
     MaxPooling2D(),  # 池化層
 
     # 第三層：卷積層 (Convolutional Layer)
-    Conv2D(128, 3, activation='relu'),  # 128 個 3x3 卷積核
+    Conv2D(256, 3, activation='relu'),  # 128 個 3x3 卷積核
     MaxPooling2D(),  # 池化層
 
     # 展平層 (Flatten)
     Flatten(),  # 展開為一維陣列
 
     # 全連接層 (Fully Connected Layer)
-    Dense(128, activation='relu'),  # 128 個神經元
+    Dense(512, activation='relu'),  # 128 個神經元
     Dense(len(class_names), activation='softmax')  # 輸出層，使用 softmax 激活函數
 ])
 
