@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 # 1. 設定參數與路徑
 data_dir = "weather_dataset" 
-batch_size = 16
-img_size = (320, 320)
+batch_size = 32
+img_size = (196, 196)
 seed = 123
 
 # 2. 載入資料集（80% 訓練 / 20% 驗證）
@@ -39,7 +39,7 @@ val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 # 4. 建立 CNN 模型
 model = models.Sequential([
   
-    Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(320, 320, 3)),
+    Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(196, 196, 3)),
     Conv2D(32, (3, 3), activation='relu', padding='same'),
     MaxPooling2D(pool_size=(2, 2)),
 
